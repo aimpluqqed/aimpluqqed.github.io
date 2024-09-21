@@ -1,314 +1,224 @@
-<!-- Deisgn: The VODKA -->
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Untitled Document</title>
-    <meta name="Author" content=""/>
-    <link rel="icon" href="" type="image/x-icon" class="site_icon" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yağış ve CRT Efekt</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"> <!-- Google Fonts -->
     <style>
-        body {
+        /* CSS kodlarınızı buraya ekleyin */
+        * {
             margin: 0;
             padding: 0;
-            background: black;
-            color: white;
-            font-family: monospace;
-            user-select: none;
-            -ms-overflow-style: none; /* for Internet Explorer, Edge */
-            scrollbar-width: none; /* for Firefox */
+            box-sizing: border-box;
         }
-        body::-webkit-scrollbar {
-          display: none; /* for Chrome, Safari, and Opera */
+
+        body, html {
+            height: 100%;
+            overflow: hidden; 
+            font-family: 'Poppins', sans-serif; 
         }
-        * { margin: 0; padding: 0; }
-        .bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: -1;
-        }
-        .bg video {
-            width: 90%;
-            object-fit: cover;
-        }
-        .box-start {
-            width: 100%;
-            height: 100vh;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            background: rgba(0,0,0,.8);
-            opacity: 0;
-            visibility: hidden;
-            display: none;
-        }
-        .box-start * {
-            text-align: center;
-        }
-        .icon img {
-            width: 200px;
-        }
-        .header {
-            font-size: 30px;
-            color: red;
-            font-weight: bold;
-            text-shadow: 1px 0 4px rgba(0,0,0,.5);
-        }
-        .desc {
-            padding: 10px;
-            width: 400px;
-        }
-        .box-end {
-            width: 100%;
-            height: 100vh;
-            background: rgba(0,0,0,.8);
-            padding-top: 20px;
-            opacity: 0;
-            visibility: hidden;
-            display: none;
-        }
-        .mod-box {
-            width: 90%;
-            margin: 0 auto;
-            background: rgba(255,255,255,.2);
-            backdrop-filter: blur(40px);
-            padding: 10px;
-            border-radius: 10px;
-            min-height: 60vh;
-        }
-        .box-start.active, .box-end.active {
-            opacity: 1;
-            visibility: visible;
-            display: block;
-            transition: 1s;
-        }
-        .ret {
-            background: black;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100vh;
-            transition: .2s;
-        }
-        .ret.active {
-            display: none;
-        }
-        .ret button {
-            font-size: 20px;
-            padding: 10px;
-            background: rgba(255,255,255,.1)
-            backdrop-filter: blur(10px);
-            border: none;
-            border-radius: 3px;
-        }
-        .ms-box {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: fixed;
-            z-index: 1;
-            background: black;
-            width: 100%;
-            height: 100vh;
-            top: 0;
-            left: 0;
-        }
-        .ms-box.active {
-            display: none;
-        }
-        .mess {
-            background: white;
-            padding: 10px;
-            color: black;
-            width: 400px;
-            height: 300px;
-            position: relative;
-        }
-        .mess-header {
-            background: whitesmoke;
-            border-bottom: 1px solid 111;
-            display: flex;
-            align-items: center;
-            padding: 0 10px;
-        }
-        .mess-header img {
-            width: 30px;
-            border-radius: 50%;
-            margin-bottom: 10px;
-        }
-        .mess-name {
-            color: dodgerblue;
-            font-weight: bold;
-            font-size: 16px;
-            padding: 0 10px;
-        }
-        .mess-box-s {
-            background: #ccc;
-            padding: 3px 7px;
-            margin: 1px 0;
-            font-size: 16px;
-            border-radius: 5px;
-            display: none;
-            transition: 1s;
-            font-size: 0;
-        }
-        .mess-box-s.active {
-            display: block;
-            font-size: 15px;
-        }
-        .mess-inp {
+
+        .background-overlay {
+            background-image: url('https://trthaberstatic.cdn.wp.trt.com.tr/resimler/1224000/1224454.jpg');
+            background-size: cover;
+            background-position: center;
             position: absolute;
-            bottom: 0;
+            top: 0;
             left: 0;
-            background: #ddd;
-            width: calc(100% - 10px);
-            padding: 6px 5px;
-            display: flex;
+            width: 100%;
+            height: 100%;
+            filter: brightness(0.5);
+            animation: fadeInOut 10s infinite alternate, bassEffect 5s ease-in-out infinite;
+            transform-origin: center center; 
         }
-        .mess-inp input {
-            font-size: 16px;
-            width: 90%;
-        }
-        .mess-inp button {
-            border: 1px solid #444;
-            padding: 1px;
-            width: 10%;
-        }
-        .wr {
-            position: absolute;
-            bottom: 40px;
-            width: calc(100% - 20px);
-            background: white;
-            left: 0;
-            padding: 0 10px;
-        }
-        @media (max-width: 760px) {
-            video {
-                width: 100%;
-                height: 100vh;
+
+        @keyframes fadeInOut {
+            0% {
+                filter: brightness(0.3);
             }
+            50% {
+                filter: brightness(0.5);
+            }
+            100% {
+                filter: brightness(0.3);
+            }
+        }
+
+        @keyframes bassEffect {
+            0%, 100% {
+                transform: scale(1); 
+            }
+            50% {
+                transform: scale(1.05); 
+            }
+        }
+
+        /* CRT TV Satır Kayması (Scanline) Efekti */
+        .scanline-effect {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(255, 255, 255, 0.05) 0,
+                rgba(255, 255, 255, 0.05) 2px,
+                rgba(0, 0, 0, 0.05) 2px,
+                rgba(0, 0, 0, 0.05) 4px
+            );
+            z-index: 5;
+            opacity: 0.5;
+            animation: scanline 0.1s steps(5) infinite;
+        }
+
+        @keyframes scanline {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 0 100%;
+            }
+        }
+
+        /* Modern yazı stili */
+        .quote {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-family: 'Poppins', sans-serif; 
+            font-size: 1.2rem; 
+            font-style: italic; 
+            text-align: center;
+            max-width: 80%; 
+            padding: 10px; 
+            background: rgba(0, 0, 0, 0.5); 
+            border-radius: 10px; 
+        }
+
+        /* Logo stili */
+        .logo {
+            position: absolute;
+            top: 20px; 
+            left: 50%;
+            transform: translate(-50%); 
+            z-index: 10; 
+            width: 250px; 
+        }
+
+        /* Ortadaki Yazı */
+        .center-text, .center2-text {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 1.2rem; /* İsteğe bağlı olarak boyutu ayarlayın */
+            font-weight: 600; /* Kalın yazı */
+            font-style: italic; /* İtalik yazı */
+            text-align: center;
+            z-index: 10;
+            opacity: 0; /* Başlangıçta görünmez */
+            animation: fadeInOutText 5s infinite alternate; /* Fade efekti */
+        }
+
+        .center-text {
+            top: 79%;
+        }
+
+        .center2-text {
+            top: 82%;
+        }
+
+        /* Alt Yazı Stili */
+        .subtitle {
+            position: absolute;
+            top: 300px; 
+            left: 50%;
+            transform: translateX(-50%); 
+            color: #FFD700; 
+            font-size: 1.5rem; 
+            font-weight: 700; 
+            text-align: center;
+            opacity: 0; /* Başlangıçta görünmez */
+            animation: fadeInOutText 5s infinite alternate; /* Fade efekti */
+        }
+
+        @keyframes fadeInOutText {
+            0%, 100% {
+                opacity: 0; /* Başlangıç ve bitişte görünmez */
+            }
+            50% {
+                opacity: 1; /* Ortada en belirgin hali */
+            }
+        }
+
+        /* Ekstra alt yazı */
+        .extra-subtitle {
+            position: absolute;
+            top: 330px; 
+            left: 50%;
+            transform: translateX(-50%); 
+            color: white;
+            font-size: 1.5rem; 
+            font-style: italic; 
+            text-align: center;
+            font-weight: 700;
+        }
+        
+        /* English alt yazı */
+        .english-subtitle {
+            position: absolute;
+            top: 370px;
+            left: 50%;
+            transform: translateX(-50%); 
+            color: white;
+            font-style: italic; 
+            font-size: 1.2rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .highlight {
+            color: white; 
         }
     </style>
 </head>
 <body>
 
-    <div class="ret">
-        <div class="click-box">
-            <button id="next-1">Siteye devam et</button>
-        </div>
-    </div>
-    <div class="ms-box">
-        <div class="dev-wiew">
-            <div class="mess">
-                <div class="mess-header">
-                    <img src="https://www.pngitem.com/pimgs/m/524-5246388_anonymous-user-hd-png-download.png">
-                    <div class="mess-name">Admin</div>
-                </div>
-                <div class="mess-box-s" id="m1">Hello Admin</div>
-                <div class="mess-box-s" id="m2">Hello Guest</div>
-                <div class="mess-box-s" id="m3">I am hacker</div>
-                <div class="mess-box-s" id="m4">I am Turkish Hacker</div>
-                <div class="mess-box-s" id="m5">I am TurkHackTeam</div>
-                <div class="mess-box-s" id="m6">This is site hacked</div>
-                <div class="wr">Admin's Writing...</div>
-                <div class="mess-inp">
-                    <input type="text" disabled="true" placeholder="Write a message...">
-                    <button disabled="">send</button>
-                </div>
-            </div>
-        </div>
-      
-    </div>
-    <div class="bg">
-        <video loop id="video">
-            <source src="https://c.tenor.com/f3HGfIRTPGYAAAPo/atat%C3%BCrk-mustafa-kemal-atat%C3%BCrk.mp4" type="">
-        </video>
-    </div>
-
-    <div class="box-start">
-        <div class="icon"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/T%C3%BCrkHackTeam_Logo.png/250px-T%C3%BCrkHackTeam_Logo.png"></div>
-        <div class="header">The site has been hacked by TURKHACKTEAM.</div>
-        <div class="desc">Bu site Turkhackteam tarafından erişime engellenerek Hacklenmiştir. Sesimizi duyduğunuz heryeri size dar edeğiz. İt'e it gibi, çakala çakal gibi...</div>
-        <div class="footer">☪ TurkHackTeam ☪</div>
-    </div>
-    <div class="box-end">
-        <div class="mod-box">
-            <h1>Size bir mesajımız var!</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-        </div>
-    </div>
-
-    <audio  loop autoplay="" class="music" style="display: none;">
-      <source src="https://cdn.indirdur.ist/dld/RUIrb0dtdTdmV1d4VFgvK25DVklHZz/shahmen-mark_(indirdur.ist).mp3" type="audio/mpeg">
-      Tarayıcınız bu özelliği desteklemiyor.
+    <audio autoplay loop>
+        <source src="https://cdn.indirdur.ist/dld/ZVFsMC8vbFhhQmo3Wkx6Y2hDa0FZQT/kurtlar-vadisi-gladio-suriye-remix_(indirdur.ist).mp3" type="audio/mpeg">
+        Your browser does not support the audio tag.
     </audio>
-<script>
-    var music = document.querySelector(".music");
-    var next1s = document.getElementById("next-1");
-    var video = document.getElementById("video");
-    var ret = document.querySelector(".ret");
-    var msbox = document.querySelector(".ms-box")
-    var messbox1 =  document.getElementById("m1");
-    var messbox2 =  document.getElementById("m2");
-    var messbox3 =  document.getElementById("m3");
-    var messbox4 =  document.getElementById("m4");
-    var messbox5 =  document.getElementById("m5");
-    var messbox6 =  document.getElementById("m6");
 
+    <div class="background-overlay"></div>
+    <div class="scanline-effect"></div>
+    <div class="quote">
+        Gençler! Cesaretimizi kuvvetlendiren ve devam ettiren sizsiniz. Siz, almakta olduğunuz eğitim ve kültür ile insanlık meziyetinin, vatan sevgisinin, fikir özgürlüğünün en değerli simgesi olacaksınız. Ey yükselen yeni kuşak! Gelecek sizindir. Cumhuriyeti biz kurduk; onu yükseltecek ve devam ettirecek sizsiniz!
+    </div>
 
-    var boxstart = document.querySelector(".box-start");
-    var boxend = document.querySelector(".box-end");
+    <!-- TürkHackTeam Logosu -->
+    <img src="https://i.imgur.com/6fSQSRO.png" alt="TürkHackTeam Logo" class="logo">
+    
+    <!-- Ortadaki yazı -->
+    <div class="center-text">
+        https://www.turkhackteam.org/net
+    </div>
+    
+    <div class="center2-text">
+        Cyber Security Platform
+    </div>
 
-    function nexted() {
-        ret.classList.add("active");
-        music.play();
-        function ms1() { messbox1.classList.add("active") }
-        function ms2() { messbox2.classList.add("active") }
-        function ms3() { messbox3.classList.add("active") }
-        function ms4() { messbox4.classList.add("active") }
-        function ms5() { messbox5.classList.add("active") }
-        function ms6() { messbox6.classList.add("active") }
-        setTimeout(ms1,1000);
-        setTimeout(ms2,5000);
-        setTimeout(ms3,7000);
-        setTimeout(ms4,13000);
-        setTimeout(ms5,16000);
-        setTimeout(ms6,19000);
-        function vdst() {
-            msbox.classList.add("active");
-            video.play();
-        }
-        setTimeout(vdst, 23000);
-        function ados() {
-            boxstart.classList.add("active");
-            boxend.classList.add("active");
-            boxstart.style.display = "flex";
-        }
-        setTimeout(ados, 31000);
-    }
+    <div class="subtitle">
+        Hacked By <span class="highlight">AimPluqqed!</span>
+    </div>
+    <div class="extra-subtitle">
+        Bu site TürkHackTeam tarafından hacklenmiştir.
+    </div>
 
+    <div class="english-subtitle">
+        (This site was hacked by TurkHackTeam.)
+    </div>
 
-    window.addEventListener("keypress", nexted);
-    next1s.addEventListener("click", nexted);
-  
-
-
-</script>
 </body>
 </html>
